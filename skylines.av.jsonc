@@ -1,0 +1,121 @@
+{
+	"traceFile": "./trace.json",
+	"frame": "Main:skylines",
+	"steps": [
+	  {"label": "sort", "pause": true, "side": "end"},
+	  {"label": "loop", "pause": true},
+	  {"label": "loopBody", "pause": true},
+	  {"label": "add", "pause": true, "side": "end"},
+	  {"label": "remove", "pause": true, "side": "end"},
+	],
+	"views": [
+		{
+			"name": "blds",
+			"type": "array",
+			"array": {"expr": "buildings"},
+
+			"position": "absolute",
+			"display": "block",
+			"height": 300,
+
+			"elementConfig": {
+				"type": "html",
+				"position": "absolute",
+				"_start": {"expr": "self.item[0]"},
+				"_end": {"expr": "self.item[1]"},
+				"_height": {"expr": "self.item[2]"},
+
+				"left": {"expr": "self._start * 10"},
+				"bottom": 0,
+				"height": {"expr": "self._height * 10"},
+				"width": {"expr": "(self._end - self._start) * 10"},
+				"border": "1px solid"
+			}
+		},
+		{
+			"name": "bldPts",
+			"type": "array",
+			"array": {"expr": "points?.elementData"},
+
+			"position": "absolute",
+			"height": 300,
+			"top": 0,
+
+			"elementConfig": {
+				"type": "html",
+				"position": "absolute",
+				"height": 6,
+				"width": 6,
+
+				"_x": {"expr": "self.item?.[0] ?? 0"},
+				"_y": {"expr": "abs(self.item?.[1] ?? 0)"},
+
+				"left": {"expr": "self._x * 10 - self.width/2"},
+				"bottom": {"expr": "self._y * 10 - self.height/2"},
+
+				"borderRadius": "3px",
+				"background": "currentcolor"
+			}
+		},
+		{
+			"name": "outPts",
+			"type": "array",
+			"array": {"expr": "output?.elementData"},
+
+			"position": "absolute",
+			"height": 300,
+			"top": 0,
+
+			"elementConfig": {
+				"type": "html",
+				"position": "absolute",
+				"height": 6,
+				"width": 6,
+
+				"_x": 0,
+				"_y": 0,
+				"autoAlpha": 0,
+
+				"left": {
+					"expr": "self._x * 10 - self.width/2",
+					"transition": {"duration": 0}
+				},
+				"bottom": {
+					"expr": "self._y * 10 - self.height/2",
+					"transition": {"duration": 0}
+				},
+
+				"borderRadius": "3px",
+				"background": "darkred",
+
+				"conditions": [
+					{
+						"if": {"expr": "self.item"},
+						"then": {
+							"_x": {"expr": "self.item[0]"},
+							"_y": {"expr": "abs(self.item[1])"},
+							"autoAlpha": 1
+						}
+					}
+				]
+			}
+		},
+		{
+			"name": "currentline",
+			"type": "html",
+			"position": "absolute",
+			"height": "100%",
+			"background": "red",
+			"width": 1,
+			"x": {"expr": "x ? x * 10 : undefined"}
+		},
+		{
+			"name": "pq",
+			"type": "array",
+			"array": {"expr": "currentHeights?.queue"},
+			"elementConfig": {
+				"content": {"expr": "self.item?.value ?? ''"}
+			}
+		}
+	]
+  }
